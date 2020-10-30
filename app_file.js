@@ -11,8 +11,15 @@ app.set('view engine', 'jade'); // jade 템플릿 엔진
 
 // 라우팅
 app.get('/topic/new', function(req,res) {
-      res.render('new');
-})
+
+      fs.readdir('data', function (err, files){
+            if(err){
+                  res.send('내부오류발생 ')
+            }
+            res.render('new', {topics:files});
+            });
+     
+});
 
 /*********************************************** */
 //코드 중복성 줄이기
@@ -99,7 +106,8 @@ app.post('/topic', function(req,res){
             if(err){
                   res.send('내부오류발생 ') ;
             }
-            res.send('Success! ->>> hi post : ' + req.body.title) ;   
+            res.send('Success! ' + req.body.title) ;   
+            res.redirect('/topic/' + title); // 경로 이동시킴
       });
 })
 
